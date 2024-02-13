@@ -5,4 +5,6 @@ CREATE TABLE Camiones
     Empresa    TEXT,
     Kilómetros INT,
     PL1.sql
+
+iuugg
 );

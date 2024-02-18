@@ -11,4 +11,4 @@ DELIMITER ','
 CSV;
 
 \d import;
-ROLLBACK;
+ROLLBACK;RRR

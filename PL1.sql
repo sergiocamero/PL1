@@ -12,12 +12,8 @@ CREATE TABLE Camiones
     kilometros INTEGER
 );
 
-COPY camiones FROM 'C:\\Users\\scamero\\Desktop\\UAH\\B.Datos2\\registros_camiones.txt'
-DELIMITER ','
-CSV;
 
 \COPY Camiones FROM 'C:\\Users\\scamero\\Desktop\\UAH\\B.Datos2\\registros_camiones.txt' DELIMITER ',' CSV;
-\COPY Peliculas_aux FROM 'peliculas.csv' WITH (ENCODING 'UTF-8',DELIMITER E'\t');
 
 \d import;
 ROLLBACK;

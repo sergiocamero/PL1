@@ -5,3 +5,10 @@ CREATE TABLE Camiones
     empresa TEXT NOT NULL,
     kilometros INTEGER
 );
+
+COPY camiones FROM 'C:\\Users\\scamero\\Desktop\\UAH\\B.Datos2\\registros_camiones.txt'
+DELIMITER ','
+CSV;
+
+\d import;
+ROLLBACK;

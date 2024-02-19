@@ -1,8 +1,5 @@
 import random
 
-# Lista de matrículas españolas aleatorias (formato 0000 ABC)
-matriculas = [f"{random.randint(0, 9999):04d} {random.choice('BCDFGHJKLMNPRSTVWXYZ')}{''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZ', k=2))}" for _ in range(10000)]
-
 # Lista de 10,000 empresas aleatorias
 empresas = ['Empresa' + str(i) for i in range(1, 10001)]
 # Agregar UPS a la lista de empresas
@@ -14,7 +11,8 @@ matriculas_generadas = set()
 num_registros = 20000000
 
 with open('C:\\Users\\scamero\\Desktop\\UAH\\B.Datos2\\registros_camiones.txt', 'w') as file:
-    for id_camion, _ in enumerate(range(num_registros), start=1):
+    id_camion = 1
+    while id_camion <= num_registros:
         while True:
             matricula = f"{random.randint(0, 9999):04d} {random.choice('BCDFGHJKLMNPRSTVWXYZ')}{''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZ', k=2))}"
             if matricula not in matriculas_generadas:
@@ -25,5 +23,6 @@ with open('C:\\Users\\scamero\\Desktop\\UAH\\B.Datos2\\registros_camiones.txt', 
         kilometros = random.randint(0, 500000)
         # Escribir registro en el archivo
         file.write(f"{id_camion},{matricula},{empresa},{kilometros}\n")
+        id_camion += 1
 
 print("Archivo generado exitosamente.")

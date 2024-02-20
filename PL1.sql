@@ -12,8 +12,15 @@ CREATE TABLE Camiones
     kilometros INTEGER
 );
 
-
 \COPY Camiones FROM 'C:\\Users\\scamero\\Desktop\\UAH\\B.Datos2\\registros_camiones.txt' DELIMITER ',' CSV;
+/*Cuestion 1*/
+SELECT oid, datname FROM pg_database WHERE datname = 'PL1';
+/*Cuestion 2*/
+show block_size;
+Select avg(length(id_camion)) from "Camiones"
+/*Cuestion 3*/
+SELECT Matricula FROM camiones WHERE Kilometros = 200000;
+
 
 \d import;
 ROLLBACK;

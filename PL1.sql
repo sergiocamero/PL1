@@ -44,6 +44,16 @@ ANALYZE Camiones;
 SELECT count(*) FROM Camiones;
 SELECT ceil(pg_total_relation_size('Camiones') / current_setting('block_size')::numeric) AS numero_bloques;
 SELECT pg_size_pretty(pg_total_relation_size('Camiones')) AS tamano_tabla;
+/*Cuestion 7*/
+VACUUM FULL Camiones;
+--Este comando realiza una reorganización más agresiva de la tabla y puede liberar más espacio, especialmente después de grandes eliminaciones. Sin embargo, ten en cuenta que VACUUM FULL bloqueará la tabla durante la operación.
+REINDEX TABLE Camiones;
+--Después de la eliminación masiva, es recomendable reconstruir los índices para mejorar el rendimiento de las consultas.
+CLUSTER Camiones USING Camiones_kilometros_idx;
+--Este comando reorganiza físicamente la tabla y sus índices en base al índice proporcionado (Camiones_kilometros_idx en este caso), lo que puede mejorar el rendimiento de las consultas que utilizan este índice.
+ANALYZE Camiones;
+--Es importante volver a ejecutar ANALYZE después de las operaciones anteriores para que las estadísticas de la tabla estén actualizadas y el optimizador de consultas pueda tomar decisiones informadas.
+
 
 \d import;
 ROLLBACK;

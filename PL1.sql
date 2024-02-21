@@ -13,11 +13,25 @@ CREATE TABLE Camiones
 );
 
 \COPY Camiones FROM 'C:\\Users\\scamero\\Desktop\\UAH\\B.Datos2\\registros_camiones.txt' DELIMITER ',' CSV;
+
 /*Cuestion 1*/
 SELECT oid, datname FROM pg_database WHERE datname = 'PL1';
 /*Cuestion 2*/
 show block_size;
-Select avg(length(id_camion)) from "Camiones"
+SELECT AVG(id_camion) FROM Camiones;
+SELECT AVG(length(matricula)) FROM Camiones;
+SELECT AVG(length(empresa)) FROM Camiones;
+SELECT AVG(kilometros) FROM Camiones;
+SELECT 
+    CEIL(AVG(LENGTH(id_camion::text))) AS longitud_media_id_camion,
+    CEIL(AVG(LENGTH(kilometros::text))) AS longitud_media_kilometros
+FROM 
+    Camiones;
+SELECT 
+    AVG(1 + FLOOR(LOG10(ABS(id_camion)))) AS longitud_media_id_camion,
+    AVG(CEIL(LOG10(kilometros + 1))) AS longitud_media_kilometros
+FROM 
+    Camiones;
 /*Cuestion 3*/
 SELECT Matricula FROM camiones WHERE Kilometros = 200000;
 /*Cuestión 4*/

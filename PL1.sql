@@ -67,6 +67,25 @@ CLUSTER Camiones USING Camiones_kilometros_idx;
 --Este comando reorganiza físicamente la tabla y sus índices en base al índice proporcionado (Camiones_kilometros_idx en este caso), lo que puede mejorar el rendimiento de las consultas que utilizan este índice.
 ANALYZE Camiones;
 --Es importante volver a ejecutar ANALYZE después de las operaciones anteriores para que las estadísticas de la tabla estén actualizadas y el optimizador de consultas pueda tomar decisiones informadas.
+/*Cuestion 8*/
+CREATE TABLE Camiones3
+(
+    id_camion SERIAL PRIMARY KEY,
+    matricula VARCHAR(10) UNIQUE NOT NULL,
+    empresa TEXT NOT NULL,
+    kilometros INTEGER
+);
+
+-- Crear las particiones automáticamente usando un bloque PL/pgSQL
+DO $$ 
+DECLARE 
+    i INT := 0;
+BEGIN
+    WHILE i < 20 LOOP
+        EXECUTE FORMAT('CREATE TABLE Camiones3_part_%s PARTITION OF Camiones3 FOR VALUES WITH (MODULUS 20, REMAINDER %s)', i, i);
+        i := i + 1;
+    END LOOP;
+END $$;
 
 
 \d import;

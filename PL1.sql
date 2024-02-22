@@ -18,18 +18,11 @@ CREATE TABLE Camiones
 SELECT oid, datname FROM pg_database WHERE datname = 'PL1';
 /*Cuestion 2*/
 show block_size;
-SELECT AVG(id_camion) FROM Camiones;
 SELECT AVG(length(matricula)) FROM Camiones;
 SELECT AVG(length(empresa)) FROM Camiones;
-SELECT AVG(kilometros) FROM Camiones;
 SELECT 
     CEIL(AVG(LENGTH(id_camion::text))) AS longitud_media_id_camion,
     CEIL(AVG(LENGTH(kilometros::text))) AS longitud_media_kilometros
-FROM 
-    Camiones;
-SELECT 
-    AVG(1 + FLOOR(LOG10(ABS(id_camion)))) AS longitud_media_id_camion,
-    AVG(CEIL(LOG10(kilometros + 1))) AS longitud_media_kilometros
 FROM 
     Camiones;
 /*Cuestion 3*/

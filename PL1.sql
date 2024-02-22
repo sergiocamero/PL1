@@ -34,6 +34,9 @@ FROM
     Camiones;
 /*Cuestion 3*/
 SELECT Matricula FROM camiones WHERE Kilometros = 200000;
+SELECT blks_read FROM pg_stat_database WHERE datname = current_database();
+SELECT blks_read FROM pg_stat_database WHERE datname = current_database();
+
 /*Cuestión 4*/
 CREATE TABLE Camiones2 AS
   SELECT *
@@ -67,6 +70,7 @@ CLUSTER Camiones USING Camiones_kilometros_idx;
 --Este comando reorganiza físicamente la tabla y sus índices en base al índice proporcionado (Camiones_kilometros_idx en este caso), lo que puede mejorar el rendimiento de las consultas que utilizan este índice.
 ANALYZE Camiones;
 --Es importante volver a ejecutar ANALYZE después de las operaciones anteriores para que las estadísticas de la tabla estén actualizadas y el optimizador de consultas pueda tomar decisiones informadas.
+
 /*Cuestion 8*/
 CREATE TABLE Camiones3
 (

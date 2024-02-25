@@ -26,8 +26,8 @@ SELECT
 FROM 
     Camiones;
 /*Cuestion 3*/
- SELECT Matricula FROM camiones WHERE Kilometros = 200000;
  SELECT pg_stat_reset();
+ SELECT Matricula FROM camiones WHERE Kilometros = 200000;
  SELECT blks_read FROM pg_stat_database WHERE datname = current_database();
 
 /*Cuestión 4*/

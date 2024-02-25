@@ -17,7 +17,7 @@ CREATE TABLE Camiones
 /*Cuestion 1*/
 SELECT oid, datname FROM pg_database WHERE datname = 'PL1';
 /*Cuestion 2*/
-show block_size;
+SELECT current_setting('block_size') AS block_size FROM pg_class WHERE relname = 'camiones';
 SELECT AVG(length(matricula)) FROM Camiones;
 SELECT AVG(length(empresa)) FROM Camiones;
 SELECT 

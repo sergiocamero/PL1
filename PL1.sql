@@ -51,6 +51,24 @@ ANALYZE Camiones2;
 SELECT count(*) FROM Camiones2;
 SELECT ceil(pg_total_relation_size('Camiones2') / current_setting('block_size')::numeric) AS numero_bloques;
 SELECT pg_size_pretty(pg_total_relation_size('Camiones2')) AS tamano_tabla;
+
+CREATE TABLE Camiones
+(
+    id_camion SERIAL PRIMARY KEY,
+    matricula VARCHAR(8) UNIQUE NOT NULL,
+    empresa VARCHAR(12) NOT NULL,
+    kilometros INTEGER
+);
+\COPY Camiones FROM 'C:\\Users\\scamero\\Desktop\\UAH\\B.Datos2\\registros_camiones.txt' DELIMITER ',' CSV;
+
+SELECT * FROM Camiones2
+ORDER BY kilometros ASC;
+
+ANALYZE Camiones2;
+SELECT count(*) FROM Camiones2;
+SELECT ceil(pg_total_relation_size('Camiones2') / current_setting('block_size')::numeric) AS numero_bloques;
+SELECT pg_size_pretty(pg_total_relation_size('Camiones2')) AS tamano_tabla;
+
 /*Cuestion 5*/
 SELECT Matricula FROM Camiones2 WHERE Kilometros = 200000;
 /*Cuestion 6*/

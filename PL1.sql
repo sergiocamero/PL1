@@ -52,7 +52,7 @@ SELECT count(*) FROM Camiones2;
 SELECT ceil(pg_total_relation_size('Camiones2') / current_setting('block_size')::numeric) AS numero_bloques;
 SELECT pg_size_pretty(pg_total_relation_size('Camiones2')) AS tamano_tabla;
 
-CREATE TABLE Camiones
+CREATE TABLE Camiones2
 (
     id_camion SERIAL PRIMARY KEY,
     matricula VARCHAR(8) UNIQUE NOT NULL,

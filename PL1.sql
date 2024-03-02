@@ -175,7 +175,20 @@ CREATE TABLE Camiones
 \COPY Camiones FROM 'C:\\Users\\scamero\\Desktop\\UAH\\B.Datos2\\registros_camiones.txt' DELIMITER ',' CSV;
 /*Cuestion 11*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+CREATE INDEX InArbol ON Camiones USING btree (kilometros);
+SELECT indexrelid::regclass AS index_name, indexrelid AS index_oid FROM pg_stat_user_indexes WHERE indexrelname = 'inarbol';
+SELECT relpages FROM pg_class WHERE relname = ‘inarbol’;
+SELECT pg_relation_size(‘inarbol’);
+SELECT * FROM pgstatindex(18850);
 
+/*Cuestion 13*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CREATE INDEX idx_kilometros_hash ON Camiones USING hash (kilometros);
+SELECT indexrelid::regclass AS index_name, indexrelid AS index_oid FROM pg_stat_user_indexes WHERE indexrelname = 'idx_kilometros_hash';
+SELECT * FROM pgstattuple ('public."idx_kilometros_hash"');
+SELECT relpages AS num_blocks FROM pg_class WHERE relname = 'idx_kilometros_hash';
+
+/*Cuestion 14*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 -- Crear las particiones automáticamente usando un bloque PL/pgSQL
 DO $$ 

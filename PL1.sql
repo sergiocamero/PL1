@@ -188,8 +188,20 @@ SELECT indexrelid::regclass AS index_name, indexrelid AS index_oid FROM pg_stat_
 SELECT * FROM pgstattuple ('public."idx_kilometros_hash"');
 SELECT relpages AS num_blocks FROM pg_class WHERE relname = 'idx_kilometros_hash';
 
-/*Cuestion 14*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*Cuestion 15*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+CREATE INDEX idx_matricula_btree ON Camiones USING btree (matricula);
 
+SELECT indexrelid::regclass AS index_name, indexrelid AS index_oid FROM pg_stat_user_indexes WHERE indexrelname = 'idx_matricula_btree';
+SELECT relpages FROM pg_class WHERE relname = ‘idx_matricula_btree’;
+SELECT pg_relation_size(‘idx_matricula_btree’);
+SELECT * FROM pgstatindex(18897);
+
+/*Cuestion 17*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+CREATE INDEX idx_matricula_hash ON Camiones USING HASH (matricula);
+
+SELECT indexrelid::regclass AS index_name, indexrelid AS index_oid FROM pg_stat_user_indexes WHERE indexrelname = 'idx_matricula_hash';
+SELECT * FROM pgstattuple ('public."idx_matricula_hash"');
+SELECT relpages AS num_blocks FROM pg_class WHERE relname = 'idx_matricula_hash';
 -- Crear las particiones automáticamente usando un bloque PL/pgSQL
 DO $$ 
 DECLARE 

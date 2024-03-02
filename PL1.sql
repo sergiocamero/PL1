@@ -84,36 +84,6 @@ SELECT blks_read FROM pg_stat_database WHERE datname = current_database();
 DELETE FROM camiones WHERE id_camion IN (SELECT id_camion FROM camiones ORDER BY random() LIMIT 2000000);
 SELECT COUNT(*) FROM camiones;
 
-=======
-
-CREATE TABLE Camiones2
-(
-    id_camion SERIAL PRIMARY KEY,
-    matricula VARCHAR(8) UNIQUE NOT NULL,
-    empresa VARCHAR(12) NOT NULL,
-    kilometros INTEGER
-);
-\COPY Camiones FROM 'C:\\Users\\scamero\\Desktop\\UAH\\B.Datos2\\registros_camiones.txt' DELIMITER ',' CSV;
-
-SELECT * FROM Camiones2
-ORDER BY kilometros ASC;
-
-ANALYZE Camiones2;
-SELECT count(*) FROM Camiones2;
-SELECT ceil(pg_total_relation_size('Camiones2') / current_setting('block_size')::numeric) AS numero_bloques;
-SELECT pg_size_pretty(pg_total_relation_size('Camiones2')) AS tamano_tabla;
-
-/*Cuestion 5*/
-SELECT Matricula FROM Camiones2 WHERE Kilometros = 200000;
-/*Cuestion 6*/
-DELETE FROM camiones
-WHERE id_camion IN (
-    SELECT id_camion
-    FROM camiones
-    ORDER BY random()
-    LIMIT 2000000
-);
->>>>>>> 181dfd134a43bedca211b5087b544d4f09f9dead
 ANALYZE Camiones;
 SELECT count(*) FROM Camiones;
 SELECT ceil(pg_total_relation_size('Camiones') / current_setting('block_size')::numeric) AS numero_bloques;

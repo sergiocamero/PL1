@@ -110,20 +110,6 @@ SELECT count(*) FROM Camiones2;
 SELECT ceil(pg_total_relation_size('Camiones2') / current_setting('block_size')::numeric) AS numero_bloques;
 SELECT pg_size_pretty(pg_total_relation_size('Camiones2')) AS tamano_tabla;
 
-/*Cuestion 5*/
-SELECT Matricula FROM Camiones2 WHERE Kilometros = 200000;
-/*Cuestion 6*/
-DELETE FROM camiones
-WHERE id_camion IN (
-    SELECT id_camion
-    FROM camiones
-    ORDER BY random()
-    LIMIT 2000000
-);
-ANALYZE Camiones;
-SELECT count(*) FROM Camiones;
-SELECT ceil(pg_total_relation_size('Camiones') / current_setting('block_size')::numeric) AS numero_bloques;
-SELECT pg_size_pretty(pg_total_relation_size('Camiones')) AS tamano_tabla;
 /*Cuestion 7*/
 VACUUM FULL Camiones;
 ANALYZE Camiones;

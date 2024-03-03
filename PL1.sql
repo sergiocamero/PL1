@@ -45,6 +45,8 @@ SELECT pg_total_relation_size('camiones') / current_setting('block_size')::numer
 
  SELECT  pg_total_relation_size('camiones') / pg_relation_size('camiones') AS factor_bloque_medio_real; 
  SELECT pg_relation_size('camiones') / current_setting('block_size')::numeric AS number_of_blocks;
+ SELECT  relpages FROM   pg_class WHERE  relname = 'camiones';
+
 
 
 /*Cuestión 4*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

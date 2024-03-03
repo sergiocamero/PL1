@@ -341,5 +341,11 @@ SELECT COUNT(*) FROM camiones3 WHERE kilometros > 600000;
 SELECT * FROM Camiones3 WHERE kilometros BETWEEN 30000 AND 80000;SELECT * FROM Camiones3 WHERE kilometros > 30000 AND kilometros < 80000;
 SELECT * FROM Camiones3 WHERE kilometros = 400000;
 
+SELECT * FROM pg_statio_user_tables WHERE relname IN (
+    'camiones3_p0', 'camiones3_p1', 'camiones3_p2', 'camiones3_p3',
+    'camiones3_p4', 'camiones3_p5', 'camiones3_p6', 'camiones3_p7',
+    'camiones3_p8', 'camiones3_p9'
+);
+
 \d import;
 ROLLBACK;

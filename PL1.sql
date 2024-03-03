@@ -216,12 +216,33 @@ SELECT relpages FROM pg_class WHERE relname = ‘inarbol’;
 SELECT pg_relation_size(‘inarbol’);
 SELECT * FROM pgstatindex(18850);
 
+
+
+/*Cuestion 12*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+SELECT COUNT(DISTINCT kilometros) AS cantidad_valores_diferentes
+FROM camiones;
+
+
+SELECT typlen AS tamaño_puntero_tabla_bytes FROM pg_type WHERE typname = 'oid';
+
+
+SELECT pg_column_size(ctid) AS tamaño_puntero_bloque_bytes
+FROM camiones
+LIMIT 1;
+
+
 /*Cuestion 13*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 CREATE INDEX idx_kilometros_hash ON Camiones USING hash (kilometros);
 SELECT indexrelid::regclass AS index_name, indexrelid AS index_oid FROM pg_stat_user_indexes WHERE indexrelname = 'idx_kilometros_hash';
 SELECT * FROM pgstattuple ('public."idx_kilometros_hash"');
 SELECT relpages AS num_blocks FROM pg_class WHERE relname = 'idx_kilometros_hash';
+
+
+
+
+
+
 
 /*Cuestion 15*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CREATE INDEX idx_matricula_btree ON Camiones USING btree (matricula);
@@ -237,6 +258,90 @@ CREATE INDEX idx_matricula_hash ON Camiones USING HASH (matricula);
 SELECT indexrelid::regclass AS index_name, indexrelid AS index_oid FROM pg_stat_user_indexes WHERE indexrelname = 'idx_matricula_hash';
 SELECT * FROM pgstattuple ('public."idx_matricula_hash"');
 SELECT relpages AS num_blocks FROM pg_class WHERE relname = 'idx_matricula_hash';
+
+/*Cuestion 20*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+DROP TABLE IF EXISTS Camiones;
+DROP TABLE IF EXISTS Camiones2;
+DROP TABLE IF EXISTS Camiones3;
+CREATE TABLE Camiones
+(
+    id_camion SERIAL PRIMARY KEY,
+    matricula VARCHAR(8) UNIQUE NOT NULL,
+    empresa VARCHAR(12) NOT NULL,
+    kilometros INTEGER
+);
+\COPY Camiones FROM 'C:\\Users\\scamero\\Desktop\\UAH\\B.Datos2\\registros_camiones.txt' DELIMITER ',' CSV;
+
+CREATE INDEX InArbol ON Camiones USING btree (kilometros);
+CREATE INDEX idx_kilometros_hash ON Camiones USING hash (kilometros);
+CREATE INDEX idx_id_camion_hash ON Camiones USING hash (id_camion);
+
+/*Cuestion 21*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Select  pg_stat_reset();
+select pg_stat_reset() from pg_statio_user_indexes;
+SELECT blks_read FROM pg_stat_database WHERE datname = current_database();
+SELECT tup_returned,tup_inserted,tup_updated,tup_deleted,blks_read,blk_read_time FROM pg_stat_database WHERE datname = current_database();;
+
+SELECT * FROM camiones WHERE Kilometros = 50000;
+SELECT * FROM camiones WHERE id_camion = 30000;
+SELECT COUNT(*) FROM camiones WHERE kilometros > 400000;
+SELECT empresa, COUNT(*) AS numero_de_camiones FROM camiones GROUP BY empresa;
+INSERT INTO camiones (id_camion, matricula, empresa, kilometros) VALUES (20000001,'8181 BAA', 'UPS', 30000);
+UPDATE camiones SET kilometros = 20000 WHERE id_camion = 20000001;
+SELECT * FROM camiones WHERE id_camion>80000 AND id_camion<100000;
+
+
+/*Cuestion 22*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+DROP INDEX IF EXISTS InArbol;
+DROP INDEX IF EXISTS idx_kilometros_hash;
+DROP INDEX IF EXISTS idx_id_camion_hash;
+CREATE INDEX multikeybtree ON public."camiones" (empresa, kilometros);
+
+/*Cuestion 23*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Select  pg_stat_reset();
+select pg_stat_reset() from pg_statio_user_indexes;
+SELECT blks_read FROM pg_stat_database WHERE datname = current_database();
+SELECT tup_returned,tup_inserted,tup_updated,tup_deleted,blks_read,blk_read_time FROM pg_stat_database WHERE datname = current_database();;
+
+SELECT COUNT(*) AS num_camiones FROM camiones WHERE empresa = 'UPS';
+SELECT * FROM camiones WHERE empresa = 'UPS' OR kilometros = 90000;(2035 filas)
+SELECT * FROM camiones WHERE empresa = 'UPS' AND kilometros = 60000;
+
+/*Cuestion 24*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CREATE TABLE Camiones3 (
+    id_camion SERIAL,
+    matricula VARCHAR(8) NOT NULL,
+    empresa VARCHAR(12) NOT NULL,
+    kilometros INTEGER
+) PARTITION BY RANGE (kilometros);
+
+
+CREATE TABLE camiones_part_0_49999 PARTITION OF Camiones3 FOR VALUES FROM (0) TO (50001);
+CREATE TABLE camiones_part_50000_99999 PARTITION OF Camiones3 FOR VALUES FROM (50001) TO (100001);
+CREATE TABLE camiones_part_100000_149999 PARTITION OF Camiones3 FOR VALUES FROM (100001) TO (150001);
+CREATE TABLE camiones_part_150000_199999 PARTITION OF Camiones3 FOR VALUES FROM (150001) TO (200001);
+CREATE TABLE camiones_part_200000_249999 PARTITION OF Camiones3 FOR VALUES FROM (200001) TO (250001);
+CREATE TABLE camiones_part_250000_299999 PARTITION OF Camiones3 FOR VALUES FROM (250001) TO (300001);
+CREATE TABLE camiones_part_300000_349999 PARTITION OF Camiones3 FOR VALUES FROM (300001) TO (350001);
+CREATE TABLE camiones_part_350000_399999 PARTITION OF Camiones3 FOR VALUES FROM (350001) TO (400001);
+CREATE TABLE camiones_part_400000_449999 PARTITION OF Camiones3 FOR VALUES FROM (400001) TO (450001);
+CREATE TABLE camiones_part_450000_499999 PARTITION OF Camiones3 FOR VALUES FROM (450001) TO (500001);
+
+\COPY Camiones3 FROM 'C:\\Users\\scamero\\Desktop\\UAH\\B.Datos2\\registros_camiones.txt' DELIMITER ',' CSV;
+
+Select  pg_stat_reset();
+SELECT blks_read FROM pg_stat_database WHERE datname = current_database();
+SELECT tup_returned,tup_inserted,tup_updated,tup_deleted,blks_read,blk_read_time FROM pg_stat_database WHERE datname = current_database();;
+
+SELECT COUNT(*) FROM camiones3 WHERE kilometros > 600000;
+SELECT * FROM Camiones3 WHERE kilometros BETWEEN 30000 AND 80000;SELECT * FROM Camiones3 WHERE kilometros > 30000 AND kilometros < 80000;
+SELECT * FROM Camiones3 WHERE kilometros = 400000;
+
+
 -- Crear las particiones automáticamente usando un bloque PL/pgSQL
 DO $$ 
 DECLARE 

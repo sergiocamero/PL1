@@ -2,7 +2,7 @@
 
 BEGIN;
 
-/*psql -h localhost -d PL1 -U postgres -p 5432*/
+psql -h localhost -d PL1 -U postgres -p 5432
 
 CREATE TABLE Camiones
 (
@@ -11,7 +11,7 @@ CREATE TABLE Camiones
     empresa VARCHAR(12) NOT NULL,
     kilometros INTEGER
 );
-\COPY Camiones FROM 'C:\\Users\\scamero\\Desktop\\UAH\\B.Datos2\\registros_camiones.txt' DELIMITER ',' CSV;
+\COPY Camiones FROM "D:\\GISI\\2º\\BASES DE DATOS AVANZADAS\\LABORATORIO\\registros_camiones.txt" DELIMITER ',' CSV;
 SELECT empresa FROM Camiones;
 DROP TABLE IF EXISTS Camiones;
 
@@ -19,6 +19,7 @@ DROP TABLE IF EXISTS Camiones;
 SELECT oid, relname FROM pg_class WHERE relname = 'camiones';
 
 /*Cuestion 2*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 SELECT current_setting('block_size') AS block_size FROM pg_class WHERE relname = 'camiones';
 
 SELECT AVG(length(matricula)) FROM Camiones;
@@ -43,6 +44,8 @@ SELECT pg_total_relation_size('camiones') / current_setting('block_size')::numer
  SELECT blks_read FROM pg_stat_database WHERE datname = current_database();
 
  SELECT  pg_total_relation_size('camiones') / pg_relation_size('camiones') AS factor_bloque_medio_real; 
+ SELECT pg_relation_size('camiones') / current_setting('block_size')::numeric AS number_of_blocks;
+
 
 /*Cuestión 4*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -86,6 +89,36 @@ SELECT blks_read FROM pg_stat_database WHERE datname = current_database();
 DELETE FROM camiones WHERE id_camion IN (SELECT id_camion FROM camiones ORDER BY random() LIMIT 2000000);
 SELECT COUNT(*) FROM camiones;
 
+=======
+
+CREATE TABLE Camiones2
+(
+    id_camion SERIAL PRIMARY KEY,
+    matricula VARCHAR(8) UNIQUE NOT NULL,
+    empresa VARCHAR(12) NOT NULL,
+    kilometros INTEGER
+);
+\COPY Camiones FROM 'C:\\Users\\scamero\\Desktop\\UAH\\B.Datos2\\registros_camiones.txt' DELIMITER ',' CSV;
+
+SELECT * FROM Camiones2
+ORDER BY kilometros ASC;
+
+ANALYZE Camiones2;
+SELECT count(*) FROM Camiones2;
+SELECT ceil(pg_total_relation_size('Camiones2') / current_setting('block_size')::numeric) AS numero_bloques;
+SELECT pg_size_pretty(pg_total_relation_size('Camiones2')) AS tamano_tabla;
+
+/*Cuestion 5*/
+SELECT Matricula FROM Camiones2 WHERE Kilometros = 200000;
+/*Cuestion 6*/
+DELETE FROM camiones
+WHERE id_camion IN (
+    SELECT id_camion
+    FROM camiones
+    ORDER BY random()
+    LIMIT 2000000
+);
+>>>>>>> 181dfd134a43bedca211b5087b544d4f09f9dead
 ANALYZE Camiones;
 SELECT count(*) FROM Camiones;
 SELECT ceil(pg_total_relation_size('Camiones') / current_setting('block_size')::numeric) AS numero_bloques;

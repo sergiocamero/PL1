@@ -91,8 +91,13 @@ SELECT blks_read FROM pg_stat_database WHERE datname = current_database();
 DELETE FROM camiones WHERE id_camion IN (SELECT id_camion FROM camiones ORDER BY random() LIMIT 2000000);
 SELECT COUNT(*) FROM camiones;
 
-=======
 
+<<<<<<< HEAD
+ANALYZE Camiones;
+SELECT count(*) FROM Camiones;
+SELECT ceil(pg_total_relation_size('Camiones') / current_setting('block_size')::numeric) AS numero_bloques;
+SELECT pg_size_pretty(pg_total_relation_size('Camiones')) AS tamano_tabla;
+=======
 CREATE TABLE Camiones2
 (
     id_camion SERIAL PRIMARY KEY,
